@@ -15,7 +15,7 @@ import {z} from 'genkit';
 const CoverLetterInputSchema = z.object({
   roleTitle: z.string().describe('The role title for the internship.'),
   companyName: z.string().describe('The name of the company.'),
-  resumeText: z.string().describe('The text of the resume.'),
+  resumeDataUri: z.string().describe("The user's resume, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."),
 });
 export type CoverLetterInput = z.infer<typeof CoverLetterInputSchema>;
 
@@ -32,7 +32,9 @@ const prompt = ai.definePrompt({
   name: 'coverLetterPrompt',
   input: {schema: CoverLetterInputSchema},
   output: {schema: CoverLetterOutputSchema},
-  prompt: `Generate a professional, internship-level cover letter for a student applying to the {{roleTitle}} at {{companyName}}, based on the following resume:\n\n{{resumeText}}`,
+  prompt: `Generate a professional, internship-level cover letter for a student applying to the {{roleTitle}} at {{companyName}}. Analyze their resume provided as an image/document to tailor the letter.
+
+Resume: {{media url=resumeDataUri}}`,
 });
 
 const generateCoverLetterFlow = ai.defineFlow(

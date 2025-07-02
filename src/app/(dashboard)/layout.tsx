@@ -1,16 +1,5 @@
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarProvider,
-  SidebarTrigger,
-} from '@/components/ui/sidebar';
 import NavLinks from '@/components/nav-links';
-import { Icons } from '@/components/icons';
-import { Button } from '@/components/ui/button';
-import { LogOut } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function DashboardLayout({
   children,
@@ -18,30 +7,23 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader className="p-4">
-          <div className="flex items-center gap-2">
-            <Icons.InternAISVG className="h-8 w-8 text-primary" />
-            <span className="text-xl font-semibold">InternAI</span>
-          </div>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            <NavLinks />
-          </SidebarMenu>
-        </SidebarContent>
-      </Sidebar>
-      <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6 md:justify-end">
-          <SidebarTrigger className="md:hidden" />
-          <Button variant="ghost" size="icon">
-            <LogOut className="h-5 w-5" />
-            <span className="sr-only">Logout</span>
-          </Button>
-        </header>
-        <main className="p-4 sm:p-6">{children}</main>
-      </SidebarInset>
-    </SidebarProvider>
+    <div className="flex min-h-screen w-full flex-col">
+      <header className="sticky top-0 z-10 flex h-auto flex-col items-center gap-4 border-b border-white/10 bg-background px-4 py-6 sm:px-6">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-white">
+            InternSpark
+          </h1>
+          <p
+            className={cn(
+              'mt-2 bg-gradient-to-r from-violet-400 to-indigo-500 bg-clip-text text-lg font-semibold text-transparent'
+            )}
+          >
+            Your AI-Powered Internship Assistant
+          </p>
+        </div>
+        <NavLinks />
+      </header>
+      <main className="flex-1 p-4 sm:p-6">{children}</main>
+    </div>
   );
 }

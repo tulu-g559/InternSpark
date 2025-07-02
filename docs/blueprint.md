@@ -1,4 +1,4 @@
-# **App Name**: InternAI
+# **App Name**: InternSpark
 
 ## Core Features:
 

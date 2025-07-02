@@ -12,7 +12,7 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const ResumeReviewInputSchema = z.object({
-  resumeText: z.string().describe('The text of the resume to review.'),
+  resumeDataUri: z.string().describe("A photo of a resume, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."),
 });
 export type ResumeReviewInput = z.infer<typeof ResumeReviewInputSchema>;
 
@@ -30,9 +30,9 @@ const resumeReviewPrompt = ai.definePrompt({
   name: 'resumeReviewPrompt',
   input: {schema: ResumeReviewInputSchema},
   output: {schema: ResumeReviewOutputSchema},
-  prompt: `You are a resume mentor for college students. The user will upload their resume text.
+  prompt: `You are a resume mentor for college students. The user will upload their resume as an image or document.
 
-  Resume Text: {{{resumeText}}}
+  Resume: {{media url=resumeDataUri}}
 
   Return:
   1. A summary (skills, education, key projects).

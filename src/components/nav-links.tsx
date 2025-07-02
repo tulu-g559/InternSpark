@@ -9,7 +9,7 @@ import {
   Mail,
   ClipboardList,
 } from 'lucide-react';
-import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 
 const navItems = [
@@ -17,31 +17,26 @@ const navItems = [
     href: '/resume-review',
     icon: FileText,
     label: 'Resume Review',
-    tooltip: 'Resume Review',
   },
   {
     href: '/mock-interview',
     icon: MessagesSquare,
     label: 'Mock Interview',
-    tooltip: 'Mock Interview',
   },
   {
     href: '/readiness-tracker',
     icon: Gauge,
     label: 'Readiness Tracker',
-    tooltip: 'Readiness Tracker',
   },
   {
     href: '/cover-letter',
     icon: Mail,
-    label: 'Cover Letter Generator',
-    tooltip: 'Cover Letter Generator',
+    label: 'Cover Letter',
   },
   {
     href: '/job-description-simplifier',
     icon: ClipboardList,
     label: 'JD Simplifier',
-    tooltip: 'JD Simplifier',
   },
 ];
 
@@ -53,22 +48,35 @@ export default function NavLinks() {
     setMounted(true);
   }, []);
 
+  if (!mounted) {
+    // Render a placeholder on the server to avoid hydration mismatch
+    return (
+      <nav className="flex items-center justify-center space-x-2 md:space-x-4">
+        {navItems.map((item) => (
+          <div key={item.href} className="h-10 w-24 animate-pulse rounded-md bg-slate-800" />
+        ))}
+      </nav>
+    );
+  }
+
   return (
-    <>
-      {navItems.map((item) => (
-        <SidebarMenuItem key={item.href}>
-          <SidebarMenuButton
-            asChild
-            isActive={mounted ? pathname === item.href : false}
-            tooltip={item.tooltip}
+    <nav className="flex items-center justify-center space-x-2 overflow-x-auto p-1 md:space-x-4">
+      {navItems.map((item) => {
+        const isActive = pathname === item.href;
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={cn(
+              'flex items-center gap-2 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-primary',
+              isActive && 'text-primary'
+            )}
           >
-            <Link href={item.href}>
-              <item.icon />
-              <span>{item.label}</span>
-            </Link>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      ))}
-    </>
+            <item.icon className="h-4 w-4" />
+            <span className={cn('relative', isActive && 'after:absolute after:-bottom-2.5 after:left-0 after:h-0.5 after:w-full after:bg-cyan-400')}>{item.label}</span>
+          </Link>
+        );
+      })}
+    </nav>
   );
 }

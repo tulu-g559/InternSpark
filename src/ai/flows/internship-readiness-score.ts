@@ -11,7 +11,7 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const InternshipReadinessInputSchema = z.object({
-  resumeText: z.string().describe('The text content of the resume.'),
+  resumeDataUri: z.string().describe("The user's resume, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."),
 });
 export type InternshipReadinessInput = z.infer<typeof InternshipReadinessInputSchema>;
 
@@ -36,9 +36,9 @@ const prompt = ai.definePrompt({
   output: {schema: InternshipReadinessOutputSchema},
   prompt: `You are an expert career counselor specializing in internships.
 
-Given the following resume text, provide an Internship Readiness Score out of 100.  Also give 3 personalized tips to improve their chances of getting an internship.  The tips should be very specific to the resume provided.
+Given the following resume (provided as an image/document), provide an Internship Readiness Score out of 100. Also give 3 personalized tips to improve their chances of getting an internship. The tips should be very specific to the resume provided.
 
-Resume Text: {{{resumeText}}}`,
+Resume: {{media url=resumeDataUri}}`,
 });
 
 const internshipReadinessFlow = ai.defineFlow(

@@ -6,12 +6,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { PageHeader } from '@/components/page-header';
 import { Loader } from '@/components/loader';
+import { Wand2 } from 'lucide-react';
 
 import { simplifyJobDescription, type SimplifyJobDescriptionOutput } from '@/ai/flows/job-description-simplifier';
 
@@ -52,83 +52,78 @@ export default function JobDescriptionSimplifierPage() {
   }
 
   return (
-    <div>
-      <PageHeader
-        title="Job Description Simplifier"
-        description="Paste a complex job description to get a clear, easy-to-understand summary of key skills, responsibilities, and preparation tips."
-      />
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Job Description</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="jobDescription"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Paste the job description below</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Paste the full job description here..."
-                          className="min-h-[300px] resize-y text-sm"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" disabled={isLoading} className="w-full">
-                  {isLoading ? <Loader /> : 'Simplify Description'}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+      <Card className="rounded-xl shadow-lg">
+        <CardHeader>
+          <CardTitle>Job Description Simplifier</CardTitle>
+          <CardDescription>Paste a complex job description to get a clear, easy-to-understand summary of key skills, responsibilities, and preparation tips.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="jobDescription"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Paste the job description below</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Paste the full job description here..."
+                        className="min-h-[300px] resize-y text-sm"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" disabled={isLoading} className="w-full transition ease-in-out hover:scale-105">
+                {isLoading ? <Loader /> : <><Wand2 className="mr-2 h-4 w-4" /> Simplify Description</>}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
 
-        <div className="space-y-8">
-          {isLoading && (
-            <Card className="flex min-h-[400px] items-center justify-center">
-              <div className="text-center">
-                <Loader className="mx-auto h-12 w-12" />
-                <p className="mt-4 text-muted-foreground">Simplifying the description...</p>
-              </div>
+      <div className="space-y-8">
+        {isLoading && (
+          <Card className="flex min-h-[400px] items-center justify-center rounded-xl shadow-lg">
+            <div className="text-center">
+              <Loader className="mx-auto h-12 w-12" />
+              <p className="mt-4 text-muted-foreground">Simplifying the description...</p>
+            </div>
+          </Card>
+        )}
+
+        {result && (
+          <>
+            <Card className="rounded-xl shadow-lg">
+              <CardHeader>
+                <CardTitle>Summary</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">{result.summary}</p>
+              </CardContent>
             </Card>
-          )}
-
-          {result && (
-            <>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Summary</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm">{result.summary}</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Required Skills</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm">{result.requiredSkills}</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Preparation Tips</CardTitle>
-                </CardHeader>
-                <CardContent>
-                 <p className="text-sm">{result.preparationTips}</p>
-                </CardContent>
-              </Card>
-            </>
-          )}
-        </div>
+            <Card className="rounded-xl shadow-lg">
+              <CardHeader>
+                <CardTitle>Required Skills</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">{result.requiredSkills}</p>
+              </CardContent>
+            </Card>
+            <Card className="rounded-xl shadow-lg">
+              <CardHeader>
+                <CardTitle>Preparation Tips</CardTitle>
+              </CardHeader>
+              <CardContent>
+               <p className="text-sm text-muted-foreground">{result.preparationTips}</p>
+              </CardContent>
+            </Card>
+          </>
+        )}
       </div>
     </div>
   );
