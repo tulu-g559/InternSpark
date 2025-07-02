@@ -6,13 +6,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { PageHeader } from '@/components/page-header';
 import { Loader } from '@/components/loader';
+import { FileDropzone } from '@/components/file-dropzone';
+import { FileText, Wand2 } from 'lucide-react';
+
 
 import { generateCoverLetter, type CoverLetterOutput } from '@/ai/flows/cover-letter-generator';
 
@@ -20,7 +22,7 @@ const formSchema = z.object({
   roleTitle: z.string().min(3, { message: 'Role title is required.' }),
   companyName: z.string().min(2, { message: 'Company name is required.' }),
   resumeText: z.string().min(100, {
-    message: 'Resume text must be at least 100 characters.',
+    message: 'Please upload a resume with at least 100 characters.',
   }),
 });
 
@@ -66,10 +68,11 @@ export default function CoverLetterPage() {
         <Card>
           <CardHeader>
             <CardTitle>Your Details</CardTitle>
+            <CardDescription>Fill in the details below to generate your cover letter.</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
                   control={form.control}
                   name="roleTitle"
@@ -101,20 +104,20 @@ export default function CoverLetterPage() {
                   name="resumeText"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Paste your resume text</FormLabel>
+                      <FormLabel>Upload your Resume</FormLabel>
                       <FormControl>
-                        <Textarea
-                          placeholder="Paste your full resume here..."
-                          className="min-h-[200px] resize-y font-code text-sm"
-                          {...field}
+                        <FileDropzone 
+                          className="h-48"
+                          onFileRead={(content) => field.onChange(content)} 
+                          disabled={isLoading}
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button type="submit" disabled={isLoading} className="w-full">
-                  {isLoading ? <Loader /> : 'Generate Cover Letter'}
+                <Button type="submit" disabled={isLoading || !form.formState.isValid} className="w-full">
+                  {isLoading ? <Loader /> : <> <Wand2 className="mr-2 h-4 w-4" /> Generate Cover Letter </>}
                 </Button>
               </form>
             </Form>
@@ -124,12 +127,23 @@ export default function CoverLetterPage() {
         <div className="space-y-8">
           {isLoading && (
             <Card className="flex min-h-[400px] items-center justify-center">
-              <div className="text-center">
-                <Loader className="mx-auto h-12 w-12" />
-                <p className="mt-4 text-muted-foreground">Generating your cover letter...</p>
+              <div className="flex flex-col items-center text-center">
+                <Loader className="h-12 w-12" />
+                <p className="mt-4 text-lg font-semibold">Generating your cover letter...</p>
+                <p className="text-muted-foreground">Our AI is crafting the perfect message. Hang tight.</p>
               </div>
             </Card>
           )}
+
+          {!isLoading && !result && (
+             <Card className="flex min-h-[400px] items-center justify-center">
+               <div className="text-center text-muted-foreground">
+                 <FileText className="mx-auto h-16 w-16" />
+                 <h3 className="mt-4 text-lg font-semibold text-foreground">Awaiting Details</h3>
+                 <p className="mt-1">Your generated cover letter will appear here.</p>
+               </div>
+             </Card>
+           )}
 
           {result && (
             <Card>
@@ -137,7 +151,7 @@ export default function CoverLetterPage() {
                 <CardTitle>Generated Cover Letter</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="prose prose-sm prose-invert max-w-none rounded-md border bg-secondary/30 p-4 font-serif">
+                <div className="prose prose-sm dark:prose-invert max-w-none rounded-md border bg-secondary/30 p-4 font-serif">
                   <p className="whitespace-pre-wrap">{result.coverLetter}</p>
                 </div>
               </CardContent>
