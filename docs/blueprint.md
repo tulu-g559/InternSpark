@@ -1,4 +1,4 @@
-# **App Name**: InternSpark
+# **App Name**: ⚡InternSpark⚡
 
 ## Core Features:
 
