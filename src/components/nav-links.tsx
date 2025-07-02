@@ -10,6 +10,7 @@ import {
   ClipboardList,
 } from 'lucide-react';
 import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { useEffect, useState } from 'react';
 
 const navItems = [
   {
@@ -46,20 +47,26 @@ const navItems = [
 
 export default function NavLinks() {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
       {navItems.map((item) => (
         <SidebarMenuItem key={item.href}>
-          <Link href={item.href}>
-            <SidebarMenuButton
-              isActive={pathname === item.href}
-              tooltip={item.tooltip}
-            >
+          <SidebarMenuButton
+            asChild
+            isActive={mounted ? pathname === item.href : false}
+            tooltip={item.tooltip}
+          >
+            <Link href={item.href}>
               <item.icon />
               <span>{item.label}</span>
-            </SidebarMenuButton>
-          </Link>
+            </Link>
+          </SidebarMenuButton>
         </SidebarMenuItem>
       ))}
     </>
