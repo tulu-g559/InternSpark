@@ -11,6 +11,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { saveResume } from '@/services/resumeService';
 
 const CoverLetterInputSchema = z.object({
   roleTitle: z.string().describe('The role title for the internship.'),
@@ -44,6 +45,7 @@ const generateCoverLetterFlow = ai.defineFlow(
     outputSchema: CoverLetterOutputSchema,
   },
   async input => {
+    await saveResume(input.resumeDataUri);
     const {output} = await prompt(input);
     return output!;
   }
