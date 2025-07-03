@@ -31,7 +31,7 @@ export default function DashboardLayout({
         <div className="text-center">
           <div className="flex items-center justify-center gap-x-3">
             <Icons.InternSparkLogo className="h-14 w-14" />
-            <h1 className="text-4xl font-bold text-white">InternSpark</h1>
+            <h1 className="text-4xl font-bold text-white">InternSpark⚡</h1>
           </div>
           <p
             className={cn(
