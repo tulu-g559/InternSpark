@@ -7,6 +7,17 @@ It leverages cutting-edge technologies like Google Gemini and Firebase to provid
 
 _The platform is designed to be **beginner-friendly, accessible, and practical—making** it an ideal companion for students who want to confidently navigate the competitive internship landscape_.
 
+
+Core Google Tech used:
+------------
+```
+1. Project IDX
+2. Firebase Studio
+3. Gemini 2.0 Flash API
+4. GenKit
+5. Firebase Firestore
+```
+
 🚀 Features
 -----------
 
@@ -35,6 +46,20 @@ _The platform is designed to be **beginner-friendly, accessible, and practical�
     *   Paste a job description (via LinkedIn, or any careers page)
     *   Gemini transforms it into clear summary, key skills, and preparation guidelines
         
+Snapshots:
+----------
+
+| 🔍 Resume Review | 🎤 Mock HR Questions | 📊 Readiness Tracker |
+|------------------|----------------------|------------------------|
+| ![Resume Review](https://github.com/user-attachments/assets/7c2759f2-996c-484a-be71-97fb8ea03c76) | ![Mock HR](https://github.com/user-attachments/assets/718e40d5-f1b1-4ffe-ab9c-76679e6f7cbd) | ![Readiness Tracker](https://github.com/user-attachments/assets/cd55f0aa-1bff-458e-a302-cfb389a9701e) |
+
+| 📝 Cover Letter Generator | 📄 JD Simplifier |
+|----------------------------|-------------------|
+| ![Cover Letter](https://github.com/user-attachments/assets/14f7054b-3fae-47fc-b978-24f2e18be5ae) | ![JD Simplifier](https://github.com/user-attachments/assets/c2a46ec8-2e9c-40f7-ad05-2d9a8323b0ce) |
+
+
+
+
 
 🛠️ Tech Stack
 --------------
