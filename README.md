@@ -1,6 +1,9 @@
 ⚡ InternSpark ⚡
 ===============
+### 🎯 **Problem Statement:**
+Most college students struggle to find tech internships due to poor resume quality, lack of interview preparation, and unclear understanding of job requirements.
 
+-----
 **InternSpark** is a modern, AI-powered web application built to guide college students toward internship success by automating and simplifying key stages of the preparation process.
 
 It leverages cutting-edge technologies like Google Gemini and Firebase to provide tailored support in crafting high-quality resumes, generating realistic HR interview questions, and evaluating internship readiness. By offering a personalized, interactive experience, InternSpark helps students not only assess where they stand but also improve systematically with AI-driven suggestions. 
