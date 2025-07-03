@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader } from '@/components/loader';
 import { FileDropzone } from '@/components/file-dropzone';
 import { FileText, Wand2 } from 'lucide-react';
+import { usePersistentResume } from '@/hooks/use-persistent-resume';
 
 import { generateCoverLetter, type CoverLetterOutput } from '@/ai/flows/cover-letter-generator';
 
@@ -28,6 +29,7 @@ export default function CoverLetterPage() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<CoverLetterOutput | null>(null);
+  const { storedResume, saveResume, isLoaded } = usePersistentResume();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,6 +39,12 @@ export default function CoverLetterPage() {
       resumeDataUri: '',
     },
   });
+
+  useEffect(() => {
+    if (isLoaded && storedResume) {
+      form.setValue('resumeDataUri', storedResume.dataUri, { shouldValidate: true });
+    }
+  }, [isLoaded, storedResume, form]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
@@ -99,8 +107,16 @@ export default function CoverLetterPage() {
                   <FormItem>
                     <FormLabel>Upload your Resume</FormLabel>
                     <FormControl>
-                      <FileDropzone 
-                        onFileRead={(content) => field.onChange(content)} 
+                      <FileDropzone
+                        storedResume={storedResume}
+                        onFileAccepted={(file) => {
+                          saveResume(file);
+                          field.onChange(file.dataUri);
+                        }}
+                        onFileRemoved={() => {
+                          saveResume(null);
+                          field.onChange('');
+                        }}
                         disabled={isLoading}
                       />
                     </FormControl>
