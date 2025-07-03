@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -21,6 +21,21 @@ const formSchema = z.object({
     message: 'Please upload your resume.',
   }),
 });
+
+// Helper function to render text with markdown-style bolding
+const renderWithBold = (text: string) => {
+    // Split the text by the bold markers (e.g., **text**)
+    const parts = text.split(/(\*\*.*?\*\*)/g).filter(part => part);
+    return parts.map((part, index) => {
+      // If the part is bolded, wrap it in a <strong> tag
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={index} className="font-semibold text-foreground">{part.slice(2, -2)}</strong>;
+      }
+      // Otherwise, return the text part
+      return <React.Fragment key={index}>{part}</React.Fragment>;
+    });
+};
+
 
 export default function ResumeReviewPage() {
   const { toast } = useToast();
@@ -132,7 +147,7 @@ export default function ResumeReviewPage() {
                 <CardTitle>Summary</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="whitespace-pre-wrap text-sm text-muted-foreground">{result.summary}</p>
+                <p className="whitespace-pre-wrap text-sm text-muted-foreground">{renderWithBold(result.summary)}</p>
               </CardContent>
             </Card>
             <Card className="rounded-xl shadow-lg">
@@ -140,9 +155,13 @@ export default function ResumeReviewPage() {
                 <CardTitle>Suggestions for Improvement</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="list-disc space-y-3 pl-5 text-sm text-muted-foreground">
-                  {result.suggestions.split('\n').map((item, index) => item.trim() && <li key={index} className="pl-2">{item.replace(/^- /, '')}</li>)}
-                </ul>
+                <ol className="list-decimal space-y-3 pl-5 text-sm text-muted-foreground">
+                  {result.suggestions.split('\n').map((item, index) => {
+                    const cleanedItem = item.trim().replace(/^\s*(\d+\.|-)\s*/, '');
+                    if (!cleanedItem) return null;
+                    return <li key={index} className="pl-2">{renderWithBold(cleanedItem)}</li>
+                  })}
+                </ol>
               </CardContent>
             </Card>
           </div>
