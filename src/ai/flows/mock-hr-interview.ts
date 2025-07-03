@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { saveInteraction } from '@/services/resumeService';
 
 const MockHrQuestionsInputSchema = z.object({
   internshipRole: z.string().describe('The internship role to generate questions for.'),
@@ -51,8 +52,11 @@ const generateMockHrQuestionsFlow = ai.defineFlow(
     inputSchema: MockHrQuestionsInputSchema,
     outputSchema: MockHrQuestionsOutputSchema,
   },
-  async input => {
+  async (input) => {
     const {output} = await prompt(input);
+    if (output) {
+      await saveInteraction('generateMockHrQuestionsFlow', input, output);
+    }
     return output!;
   }
 );

@@ -11,6 +11,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { saveInteraction } from '@/services/resumeService';
 
 const SimplifyJobDescriptionInputSchema = z.object({
   jobDescription: z
@@ -59,8 +60,11 @@ const simplifyJobDescriptionFlow = ai.defineFlow(
     inputSchema: SimplifyJobDescriptionInputSchema,
     outputSchema: SimplifyJobDescriptionOutputSchema,
   },
-  async input => {
+  async (input) => {
     const {output} = await prompt(input);
+    if (output) {
+      await saveInteraction('simplifyJobDescriptionFlow', input, output);
+    }
     return output!;
   }
 );

@@ -4,29 +4,44 @@
 import { db } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
-export async function saveResume(resumeDataUri: string): Promise<string> {
+/**
+ * Saves an interaction with an AI flow to Firestore.
+ * This includes the flow name, input, and the generated output.
+ */
+export async function saveInteraction(
+  flowName: string,
+  input: any,
+  output: any
+): Promise<string> {
   try {
-    if (!resumeDataUri || !process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) {
-      console.log('Firebase not configured, skipping save. Please ensure all NEXT_PUBLIC_FIREBASE_* variables are set in your .env file.');
+    // Check if Firebase is configured. If not, log a message and skip saving.
+    if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) {
+      console.log('Firebase is not configured. Skipping Firestore save. Please ensure all NEXT_PUBLIC_FIREBASE_* variables are set in your .env file.');
       return '';
     }
-    
-    // For now, we'll store resumes without associating them with a specific user.
-    // In a real application, you would include a userId here.
-    const docRef = await addDoc(collection(db, 'resumes'), {
-      // Storing the full Data URI can be large. Consider storing in Firebase Storage
-      // and saving the URL here instead for production apps.
-      resumeDataUri: resumeDataUri.substring(0, 100) + '...', // Storing a preview to avoid large document sizes
+
+    const sanitizedInput = { ...input };
+    if (sanitizedInput.resumeDataUri && typeof sanitizedInput.resumeDataUri === 'string') {
+      // To avoid exceeding Firestore's 1MB document limit with large file data URIs,
+      // we store only a preview. In a production app, you'd upload the file to
+      // Firebase Storage and save the URL here instead.
+      sanitizedInput.resumeDataUri = sanitizedInput.resumeDataUri.substring(0, 100) + '...';
+    }
+
+    const docRef = await addDoc(collection(db, 'interactions'), {
+      flowName,
+      input: sanitizedInput,
+      output,
       createdAt: serverTimestamp(),
     });
-    console.log('Resume saved with ID: ', docRef.id);
+
+    console.log(`Interaction for flow '${flowName}' saved with ID: ${docRef.id}`);
     return docRef.id;
+
   } catch (error) {
-    console.error('Error saving resume to Firestore: ', error);
-    console.error('This might be due to Firestore security rules. By default, writes are not allowed. Please check the "Rules" tab in your Firestore database console and ensure that writes are permitted to the "resumes" collection.');
-    // We don't want to block the user's main action if Firestore fails,
-    // so we'll log the error but not re-throw it.
-    // In a production app, you might want to handle this more robustly (e.g., with a monitoring service).
+    console.error(`Error saving interaction for flow '${flowName}' to Firestore:`, error);
+    console.error('This error is likely caused by your Firestore security rules. By default, writes are not allowed. Please check the "Rules" tab in your Firebase Console and ensure that writes are permitted to the "interactions" collection. For example, for testing purposes, you could use: `rules_version = \'2\'; service cloud.firestore { match /databases/{database}/documents { match /{document=**} { allow read, write: if true; } } }`');
+    // We are not re-throwing the error to avoid blocking the main user flow.
     return '';
   }
 }

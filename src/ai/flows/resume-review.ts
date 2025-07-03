@@ -10,7 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { saveResume } from '@/services/resumeService';
+import { saveInteraction } from '@/services/resumeService';
 
 const ResumeReviewInputSchema = z.object({
   resumeDataUri: z.string().describe("A photo of a resume, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."),
@@ -46,9 +46,11 @@ const resumeReviewFlow = ai.defineFlow(
     inputSchema: ResumeReviewInputSchema,
     outputSchema: ResumeReviewOutputSchema,
   },
-  async input => {
-    await saveResume(input.resumeDataUri);
+  async (input) => {
     const {output} = await resumeReviewPrompt(input);
+    if (output) {
+      await saveInteraction('resumeReviewFlow', input, output);
+    }
     return output!;
   }
 );
