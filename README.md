@@ -21,6 +21,11 @@ Core Google Tech used:
 5. Firebase Firestore
 ```
 
+Preparation Phase
+----------
+![image](https://github.com/user-attachments/assets/aedfc61a-8d59-4aa6-b08d-6d78200cf671)
+
+
 🚀 Features
 -----------
 
