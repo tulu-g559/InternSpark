@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -18,18 +17,29 @@ import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
 import { Footer } from '@/components/footer';
 
-const signupSchema = z.object({
-  name: z.string().min(3, { message: 'Name must be at least 3 characters.' }),
+// A single schema for both login and signup.
+// Name is optional at the base level, and we'll enforce it for signup using superRefine.
+const authSchema = z.object({
+  name: z.string().optional(),
   email: z.string().email({ message: 'Please enter a valid email.' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
 });
 
-const loginSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email.' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
-});
+// A helper function to create a dynamic schema based on the view.
+const getDynamicSchema = (isLogin: boolean) => {
+  return authSchema.superRefine((data, ctx) => {
+    // If it's the signup view, the name field is required.
+    if (!isLogin && (!data.name || data.name.length < 3)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['name'],
+        message: 'Name must be at least 3 characters.',
+      });
+    }
+  });
+};
 
-type AuthFormValues = z.infer<typeof signupSchema>;
+type AuthFormValues = z.infer<typeof authSchema>;
 
 export default function AuthPage() {
   const [isLoginView, setIsLoginView] = useState(true);
@@ -38,13 +48,19 @@ export default function AuthPage() {
   const { user, signup, login, loading: isAuthLoading } = useAuth();
 
   const form = useForm<AuthFormValues>({
-    resolver: zodResolver(isLoginView ? loginSchema : signupSchema),
+    // The resolver now uses the dynamic schema, which is re-evaluated on each render.
+    resolver: zodResolver(getDynamicSchema(isLoginView)),
     defaultValues: {
       name: '',
       email: '',
       password: '',
     },
   });
+
+  useEffect(() => {
+    // When the view toggles, reset the form to clear validation errors from the previous view.
+    form.reset();
+  }, [isLoginView, form]);
 
   useEffect(() => {
     if (user) {
@@ -59,7 +75,8 @@ export default function AuthPage() {
         toast({ title: 'Success', description: 'Logged in successfully.' });
         router.push('/resume-review');
       } else {
-        await signup(values.email, values.password, values.name);
+        // Our validation ensures `values.name` is a valid string in the signup flow.
+        await signup(values.email, values.password, values.name!);
         toast({ title: 'Success', description: 'Account created successfully.' });
         router.push('/resume-review');
       }
@@ -127,7 +144,7 @@ export default function AuthPage() {
                         <FormItem>
                           <FormLabel>Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Arnab Ghosh" {...field} />
+                            <Input placeholder="Arnab Ghosh" {...field} value={field.value ?? ''} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
