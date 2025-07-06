@@ -14,16 +14,17 @@ _The platform is designed to be **beginner-friendly, accessible, and practical�
 Core Google Tech used:
 ------------
 ```
-1. Project IDX
+1. Project IDX 
 2. Firebase Studio
 3. Gemini 2.0 Flash API
 4. GenKit
-5. Firebase Firestore
+5. Firebase Authentication
+6. Firestore Database
 ```
 
 Preparation Phase
 ----------
-![image](https://github.com/user-attachments/assets/aedfc61a-8d59-4aa6-b08d-6d78200cf671)
+![image](https://github.com/user-attachments/assets/3f3edd51-caa6-4be8-bbaf-faf3685f2a9b)
 
 
 🚀 Features
@@ -57,13 +58,14 @@ Preparation Phase
 Snapshots:
 ----------
 
-| 🔍 Resume Review | 🎤 Mock HR Questions | 📊 Readiness Tracker |
-|------------------|----------------------|------------------------|
-| ![Resume Review](https://github.com/user-attachments/assets/df1b0685-fc6a-456c-b487-a1044431c33a) | ![Mock HR](https://github.com/user-attachments/assets/3b6d138c-793a-408c-9367-0fb8c2b523e4) | ![Readiness Tracker](https://github.com/user-attachments/assets/df92daab-f7f0-4f64-986a-55e00725d81c) |
+| 🖥️ Landing Page Preview                                                                 | 🔍 Resume Review                                                                 | 🎤 Mock HR Questions                                                                   |
+|------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| ![Landing Page](https://github.com/user-attachments/assets/ae9189b6-e3c0-4298-b8c0-05526ea2cc5d) | ![Resume Review](https://github.com/user-attachments/assets/42776235-d7f6-4bba-b950-6295a11e872c) | ![Mock HR](https://github.com/user-attachments/assets/8c23f004-96ec-4708-ae8b-ea04779a32fd) |
 
-| 📝 Cover Letter Generator | 📄 JD Simplifier |
-|----------------------------|-------------------|
-| ![Cover Letter](https://github.com/user-attachments/assets/7b417d18-f837-43ef-9ade-c94d5dc13b73) | ![JD Simplifier](https://github.com/user-attachments/assets/121c8966-21f9-4248-8783-a78b19ca98cd) |
+| 📊 Readiness Tracker                                                                   | 📝 Cover Letter Generator                                                             | 📄 JD Simplifier                                                                       |
+|----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| ![Readiness Tracker](https://github.com/user-attachments/assets/7e263c18-e226-4f76-9097-2216027fb8fb) | ![Cover Letter](https://github.com/user-attachments/assets/d7e3410a-4220-4cd0-b9ec-8b186bc63b5d) | ![JD Simplifier](https://github.com/user-attachments/assets/90c9a7e6-1626-452a-915f-9a5ba0dc1b92) |
+
 
 
 
@@ -74,8 +76,10 @@ Snapshots:
 * **Frontend**: `Next.js` with **Firebase Studio** UI (dark themed, responsive)
 * **Backend**: `Genkit` (TypeScript) powered flows for Gemini-based AI endpoints
 * **AI**: `Gemini 2.0 Flash` API — prompt-driven text, resume and cover letter generation
-* **Database**: Firebase Firestore logs user inputs & AI outputs (`internspark_logs`)
-* **IDE & Hosting**: Built and deployed via Google IDX & Firebase Hosting
+* **Database**: `Firestore Database` logs user inputs & AI outputs (`internspark_logs`)
+* **Auth**: `Firebase Authentication` for safe input/output
+* **IDE & Hosting**: Built via `Google IDX` & Firebase Hosting
+* **Deployment**: `Render`
 
 
 Firestore Schema:
@@ -118,7 +122,7 @@ Getting Started
 
 1.  **Clone the repo**: 
 ```
-git clone https://github.com/tulu-g559/GDG-Assessment-Arnab-Ghosh.git
+git clone https://github.com/tulu-g559/InternSpark-GDG.git
 
 ```
     
