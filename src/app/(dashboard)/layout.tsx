@@ -68,20 +68,20 @@ export default function DashboardLayout({
             <p>Ace your internship preparation with Gemini powered IntenSpark</p>
           </div>
           <div className="flex flex-1 justify-end">
-            <div className="flex items-center gap-4">
-                <div className="hidden items-center gap-3 sm:flex">
-                    <Avatar className="h-9 w-9">
-                        <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ''} />
-                        <AvatarFallback className="bg-primary/20 text-primary font-semibold">
-                            {user.displayName?.charAt(0).toUpperCase() ?? user.email?.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                    </Avatar>
-                    <span className="font-medium text-white">{user.displayName ?? user.email}</span>
-                </div>
-                <Button variant="ghost" onClick={logout} className="shrink-0 text-muted-foreground hover:bg-card hover:text-primary">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Logout
-                </Button>
+            <div className="flex flex-col items-end gap-2">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-10 w-10">
+                    <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ''} />
+                    <AvatarFallback className="bg-primary/20 text-primary font-semibold">
+                        {user.displayName?.charAt(0).toUpperCase() ?? user.email?.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                </Avatar>
+                <span className="font-medium text-white">{user.displayName ?? user.email}</span>
+              </div>
+              <Button variant="ghost" onClick={logout} className="shrink-0 text-muted-foreground hover:bg-card hover:text-primary">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+              </Button>
             </div>
           </div>
         </div>
