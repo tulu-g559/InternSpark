@@ -11,7 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Loader } from '@/components/loader';
-import { Wand2 } from 'lucide-react';
+import { Wand2, ClipboardList } from 'lucide-react';
 
 import { simplifyJobDescription, type SimplifyJobDescriptionOutput } from '@/ai/flows/job-description-simplifier';
 
@@ -95,6 +95,16 @@ export default function JobDescriptionSimplifierPage() {
             </div>
           </Card>
         )}
+
+        {!isLoading && !result && (
+           <Card className="flex min-h-[400px] items-center justify-center rounded-xl shadow-lg">
+             <div className="text-center text-muted-foreground">
+               <ClipboardList className="mx-auto h-16 w-16" />
+               <h3 className="mt-4 text-lg font-semibold text-foreground">Awaiting Job Description</h3>
+               <p className="mt-1">Your simplified breakdown will appear here.</p>
+             </div>
+           </Card>
+         )}
 
         {result && (
           <>

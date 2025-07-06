@@ -77,11 +77,11 @@ export default function NavLinks({ setIsLoading }: { setIsLoading: React.Dispatc
             onClick={() => handleLinkClick(item.href)}
             className={cn(
               'flex items-center gap-2 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-card hover:text-primary',
-              isActive && 'text-primary'
+              isActive && 'bg-card text-primary'
             )}
           >
             <item.icon className="h-4 w-4" />
-            <span className={cn('relative', isActive && 'after:absolute after:-bottom-2.5 after:left-0 after:h-0.5 after:w-full after:bg-cyan-400')}>{item.label}</span>
+            <span>{item.label}</span>
           </Link>
         );
       })}

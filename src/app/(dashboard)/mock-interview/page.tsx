@@ -11,7 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Loader } from '@/components/loader';
-import { Wand2 } from 'lucide-react';
+import { Wand2, MessagesSquare } from 'lucide-react';
 
 
 import { generateMockHrQuestions, type MockHrQuestionsOutput } from '@/ai/flows/mock-hr-interview';
@@ -92,6 +92,16 @@ export default function MockInterviewPage() {
             </div>
           </Card>
         )}
+
+        {!isLoading && !result && (
+           <Card className="flex min-h-[400px] items-center justify-center rounded-xl shadow-lg">
+             <div className="text-center text-muted-foreground">
+               <MessagesSquare className="mx-auto h-16 w-16" />
+               <h3 className="mt-4 text-lg font-semibold text-foreground">Awaiting Role</h3>
+               <p className="mt-1">Your generated questions will appear here.</p>
+             </div>
+           </Card>
+         )}
 
         {result && (
           <Card className="rounded-xl shadow-lg">
