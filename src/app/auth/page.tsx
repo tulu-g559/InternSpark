@@ -29,16 +29,16 @@ const loginSchema = z.object({
   password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
 });
 
+type AuthFormValues = z.infer<typeof signupSchema>;
+
 export default function AuthPage() {
   const [isLoginView, setIsLoginView] = useState(true);
   const { toast } = useToast();
   const router = useRouter();
   const { user, signup, login, loading: isAuthLoading } = useAuth();
 
-  const formSchema = isLoginView ? loginSchema : signupSchema;
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<AuthFormValues>({
+    resolver: zodResolver(isLoginView ? loginSchema : signupSchema),
     defaultValues: {
       name: '',
       email: '',
@@ -52,14 +52,14 @@ export default function AuthPage() {
     }
   }, [user, router]);
   
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: AuthFormValues) => {
     try {
       if (isLoginView) {
         await login(values.email, values.password);
         toast({ title: 'Success', description: 'Logged in successfully.' });
         router.push('/resume-review');
       } else {
-        await signup(values.email, values.password, (values as any).name);
+        await signup(values.email, values.password, values.name);
         toast({ title: 'Success', description: 'Account created successfully.' });
         router.push('/resume-review');
       }
