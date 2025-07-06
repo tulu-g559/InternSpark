@@ -59,11 +59,11 @@ Snapshots:
 
 | 🔍 Resume Review | 🎤 Mock HR Questions | 📊 Readiness Tracker |
 |------------------|----------------------|------------------------|
-| ![Resume Review](https://github.com/user-attachments/assets/7c2759f2-996c-484a-be71-97fb8ea03c76) | ![Mock HR](https://github.com/user-attachments/assets/718e40d5-f1b1-4ffe-ab9c-76679e6f7cbd) | ![Readiness Tracker](https://github.com/user-attachments/assets/cd55f0aa-1bff-458e-a302-cfb389a9701e) |
+| ![Resume Review](https://github.com/user-attachments/assets/df1b0685-fc6a-456c-b487-a1044431c33a) | ![Mock HR](https://github.com/user-attachments/assets/3b6d138c-793a-408c-9367-0fb8c2b523e4) | ![Readiness Tracker](https://github.com/user-attachments/assets/df92daab-f7f0-4f64-986a-55e00725d81c) |
 
 | 📝 Cover Letter Generator | 📄 JD Simplifier |
 |----------------------------|-------------------|
-| ![Cover Letter](https://github.com/user-attachments/assets/14f7054b-3fae-47fc-b978-24f2e18be5ae) | ![JD Simplifier](https://github.com/user-attachments/assets/c2a46ec8-2e9c-40f7-ad05-2d9a8323b0ce) |
+| ![Cover Letter](https://github.com/user-attachments/assets/7b417d18-f837-43ef-9ade-c94d5dc13b73) | ![JD Simplifier](https://github.com/user-attachments/assets/121c8966-21f9-4248-8783-a78b19ca98cd) |
 
 
 
