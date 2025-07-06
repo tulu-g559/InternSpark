@@ -6,6 +6,49 @@ import { Icons } from '@/components/icons';
 import { Footer } from '@/components/footer';
 import { ArrowRight, ClipboardList, FileText, Gauge, Mail, MessagesSquare } from 'lucide-react';
 
+function Doodles() {
+  return (
+    <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
+      <svg
+        className="absolute bottom-0 left-0 -translate-x-1/4 -translate-y-0"
+        width="800"
+        height="600"
+        viewBox="0 0 800 600"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M-50 550C-50 550 150 250 350 350C550 450 450 200 650 150"
+          stroke="hsl(var(--primary))"
+          strokeOpacity="0.2"
+          strokeWidth="2"
+        />
+        <path
+          d="M200 450C200 450 250 500 300 450C350 400 300 350 250 350C200 350 150 400 200 450Z"
+          stroke="hsl(var(--primary))"
+          strokeOpacity="0.2"
+          strokeWidth="2"
+        />
+      </svg>
+      <svg
+        className="absolute bottom-0 right-0 translate-x-1/4 -translate-y-0"
+        width="800"
+        height="600"
+        viewBox="0 0 800 600"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M850 550C850 550 650 250 450 350C250 450 350 200 150 150"
+          stroke="hsl(var(--primary))"
+          strokeOpacity="0.2"
+          strokeWidth="2"
+        />
+      </svg>
+    </div>
+  );
+}
+
 export default function LandingPage() {
   const features = [
     {
@@ -62,8 +105,7 @@ export default function LandingPage() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="container relative py-20 text-center sm:py-32">
-           <div aria-hidden="true" className="absolute inset-0 top-0 -z-10 h-full w-full bg-background bg-[radial-gradient(hsl(var(--muted))_1px,transparent_1px)] [background-size:16px_16px]"></div>
-           <div className="absolute inset-0 -z-20 h-full w-full bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,hsla(var(--primary),0.3),rgba(255,255,255,0))]"></div>
+          <Doodles />
           
           <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
             Your AI Copilot for{' '}
