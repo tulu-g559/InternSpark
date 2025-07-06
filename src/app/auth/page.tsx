@@ -65,9 +65,23 @@ export default function AuthPage() {
       }
     } catch (error: any) {
       console.error(error);
+      let description = 'An unexpected error occurred. Please try again.';
+      
+      switch (error.code) {
+        case 'auth/invalid-credential':
+          description = 'Invalid email or password. Please check your credentials and try again.';
+          break;
+        case 'auth/email-already-in-use':
+          description = 'This email is already registered. Please log in or use a different email.';
+          break;
+        default:
+          description = error.message || description;
+          break;
+      }
+
       toast({
         title: 'Authentication Error',
-        description: error.message || 'An unexpected error occurred.',
+        description,
         variant: 'destructive',
       });
     }
