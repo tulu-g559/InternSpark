@@ -1,9 +1,8 @@
-
 'use client';
 
 import { createContext, useState, useEffect, ReactNode, useMemo, useCallback } from 'react';
 import type { User } from 'firebase/auth';
-import { onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 import { auth, db } from '@/lib/firebase';
@@ -38,6 +37,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const { user: newUser } = userCredential;
     
+    // Update user profile in Firebase Auth
+    await updateProfile(newUser, { displayName: name });
+
     // Create user profile in Firestore
     if (process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) {
       await setDoc(doc(db, 'users', newUser.uid), {
@@ -48,6 +50,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
     } else {
         console.log('Firebase is not configured. Skipping Firestore user profile creation.');
+    }
+
+    // Manually update the user in state so the UI updates immediately
+    if(auth.currentUser) {
+      setUser(auth.currentUser);
     }
 
     return userCredential;
