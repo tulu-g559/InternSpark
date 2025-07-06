@@ -97,7 +97,7 @@ export default function AuthPage() {
 
           <Card className="rounded-xl shadow-lg">
             <CardHeader>
-              <CardTitle>{isLoginView ? 'Welcome Back!' : 'Create an Account'}</CardTitle>
+              <CardTitle>{isLoginView ? 'Welcome !!!' : 'Create an Account'}</CardTitle>
               <CardDescription>
                 {isLoginView ? 'Log in to continue your journey.' : 'Sign up to get started.'}
               </CardDescription>
