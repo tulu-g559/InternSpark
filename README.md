@@ -79,7 +79,7 @@ Snapshots:
 * **Database**: `Firestore Database` logs user inputs & AI outputs (`internspark_logs`)
 * **Auth**: `Firebase Authentication` for safe input/output
 * **IDE & Hosting**: Built via `Google IDX` & Firebase Hosting
-* **Deployment**: `Render`
+* **Deployment**: `Vercel`
 
 
 Firestore Schema:
